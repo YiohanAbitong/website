@@ -1,0 +1,112 @@
+@model IEnumerable<website.Models.CartItem>
+
+@{
+ViewData["Title"] = "Shopping Cart";
+}
+
+<div class="container py-5">
+
+<h1 class="mb-4">Shopping Cart</h1>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Your cart is empty.
+    </div>
+
+    <a asp-controller="Products"
+       asp-action="Index"
+       class="btn btn-dark">
+        Continue Shopping
+    </a>
+}
+else
+{
+    <div class="table-responsive">
+
+        <table class="table table-bordered table-striped">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>@item.ProductName</td>
+
+                        <td>
+                            ₱@item.Price.ToString("N2")
+                        </td>
+
+                        <td>
+                            <form asp-action="UpdateQuantity"
+                                  method="post"
+                                  class="d-flex">
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@item.Id" />
+
+                                <input type="number"
+                                       name="quantity"
+                                       value="@item.Quantity"
+                                       min="1"
+                                       class="form-control"
+                                       style="width:80px;" />
+
+                                <button type="submit"
+                                        class="btn btn-secondary ms-2">
+                                    Update
+                                </button>
+
+                            </form>
+                        </td>
+
+                        <td>
+                            ₱@((item.Price * item.Quantity).ToString("N2"))
+                        </td>
+
+                        <td>
+                            <a asp-action="Remove"
+                               asp-route-id="@item.Id"
+                               class="btn btn-danger">
+                                Remove
+                            </a>
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="text-end">
+
+        <h3>
+            Total:
+            ₱@Model.Sum(item => item.Price * item.Quantity).ToString("N2")
+        </h3>
+
+        <a asp-controller="Products"
+           asp-action="Index"
+           class="btn btn-dark">
+            Continue Shopping
+        </a>
+
+    </div>
+}
+
+</div>

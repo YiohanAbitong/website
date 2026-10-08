@@ -21,7 +21,7 @@ private readonly ApplicationDbContext _db;
         if (!string.IsNullOrEmpty(searchString))
         {
             products = products.Where(p =>
-                p.Name(searchString));
+                p.Name.Contains(searchString));
         }
 
         ViewData["SearchString"] = searchString;
@@ -65,7 +65,7 @@ private readonly ApplicationDbContext _db;
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, Product product)
     {
-        if (1 != product.Id)
+        if (id != product.Id)
         {
             return NotFound();
         }

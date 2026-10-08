@@ -1,0 +1,8 @@
+the error 1 there is no .Contains products = products.Where(p =>
+                p.Name(searchString));
+        }
+then i put .Contains to remove the error on error1 
+
+the error 2 is (1 != product.Id) comparing the ID to number 1
+
+then i replace 1 to id to remove the error 2
